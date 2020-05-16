@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.3.xsd
+		     http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd">
+
+
+
+    <bean id="customBean" class="com.liu.study.spring.xml.CustomBean">
+        <property name="name" value="liuweian" />
+    </bean>
+
+    <bean id="aspectClass" class="com.liu.study.spring.aop.CustomAspect" />
+
+    <bean id="pointCut" class="com.liu.study.spring.aop.PointCut" />
+
+    <aop:config >
+        <aop:aspect ref="aspectClass">
+            <!-- 定义切入点 -->
+            <aop:pointcut id="customPointCut" expression="execution(* com.liu.study.spring.aop.PointCut.*(..))"/>
+
+            <!-- 操作方式 -->
+            <aop:before method="before" pointcut-ref="customPointCut" />
+            <aop:after method="after" pointcut-ref="customPointCut" />
+        </aop:aspect>
+
+    </aop:config>
+
+</beans>

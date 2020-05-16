@@ -17,7 +17,7 @@ public class AopTest {
     public static void main(String[] args) throws Exception {
         ApplicationContext context = new ClassPathXmlApplicationContext("classpath:spring-context.xml");
         PointCut pointCut = (PointCut) context.getBean("pointCut");
-        System.out.println(pointCut);
+        System.out.println(pointCut.getClass());
 
         pointCut.aopTestMethod();
         TimeUnit.SECONDS.sleep(1000);

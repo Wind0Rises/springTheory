@@ -5,18 +5,13 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.3.xsd
 		     http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd">
 
-
-
-    <bean id="customBean" class="com.liu.study.spring.xml.CustomBean">
-        <property name="name" value="liuweian" />
-    </bean>
-
     <bean id="aspectClass" class="com.liu.study.spring.aop.CustomAspect" />
 
+    <!-- 切点要交给spring管理 -->
     <bean id="pointCut" class="com.liu.study.spring.aop.PointCut" />
 
     <aop:config >
-        <aop:aspect ref="aspectClass">
+        <aop:aspect id="firstAspect" ref="aspectClass" order="1" >
             <!-- 定义切入点 -->
             <aop:pointcut id="customPointCut" expression="execution(* com.liu.study.spring.aop.PointCut.*(..))"/>
 

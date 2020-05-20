@@ -1,7 +1,7 @@
 package com.liu.study.spring.aop;
 
 /**
- * @desc 
+ * @desc
  * @author Liuweian
  * @createTime 2020/5/15 21:08
  * @version 1.0.0

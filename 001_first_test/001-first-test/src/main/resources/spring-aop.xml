@@ -5,12 +5,15 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.3.xsd
 		     http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd">
 
+    <!--
+        有自定定义的前置处理、后置处理。
+    -->
     <bean id="aspectClass" class="com.liu.study.spring.aop.CustomAspect" />
 
     <!-- 切点要交给spring管理 -->
     <bean id="pointCut" class="com.liu.study.spring.aop.PointCut" />
 
-    <aop:config >
+    <aop:config>
         <aop:aspect id="firstAspect" ref="aspectClass" order="1" >
             <!-- 定义切入点 -->
             <aop:pointcut id="customPointCut" expression="execution(* com.liu.study.spring.aop.PointCut.*(..))"/>
@@ -19,7 +22,5 @@
             <aop:before method="before" pointcut-ref="customPointCut" />
             <aop:after method="after" pointcut-ref="customPointCut" />
         </aop:aspect>
-
     </aop:config>
-
 </beans>

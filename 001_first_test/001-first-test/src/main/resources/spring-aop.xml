@@ -13,14 +13,34 @@
     <!-- 切点要交给spring管理 -->
     <bean id="pointCut" class="com.liu.study.spring.aop.PointCut" />
 
+
+
+    <!-- 接口代理（JDK Proxy） -->
+    <bean id="interfacePointCut" abstract="true" class="com.liu.study.spring.aop.jdk.IOrderService" />
+
+    <bean id="payOrderService" class="com.liu.study.spring.aop.jdk.PayOrderServiceImpl" />
+
+    <bean id="orderAdvisor" class="com.liu.study.spring.aop.jdk.OrderAdvisor" />
+
+
     <aop:config>
         <aop:aspect id="firstAspect" ref="aspectClass" order="1" >
             <!-- 定义切入点 -->
             <aop:pointcut id="customPointCut" expression="execution(* com.liu.study.spring.aop.PointCut.*(..))"/>
-
             <!-- 操作方式 -->
             <aop:before method="before" pointcut-ref="customPointCut" />
             <aop:after method="after" pointcut-ref="customPointCut" />
         </aop:aspect>
+
+
+        <aop:aspect id="jdkAspect" ref="orderAdvisor" order="2">
+            <aop:pointcut id="jdkPointCut" expression="execution(* com.liu.study.spring.aop.jdk.IOrderService.*(..))"/>
+
+            <!-- 操作方式 -->
+            <aop:before method="before" pointcut-ref="jdkPointCut" />
+            <aop:after method="after" pointcut-ref="jdkPointCut" />
+        </aop:aspect>
+
     </aop:config>
+
 </beans>

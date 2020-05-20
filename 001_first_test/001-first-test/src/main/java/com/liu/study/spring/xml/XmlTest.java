@@ -12,11 +12,8 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 public class XmlTest {
 
     public static void main(String[] args) {
-        ApplicationContext context = new ClassPathXmlApplicationContext("classpath:spring-context.xml");
+        ApplicationContext context = new ClassPathXmlApplicationContext("classpath:spring-xml.xml");
         CustomBean customBean = (CustomBean) context.getBean("customBean");
-
-
-
         customBean.customBeanMethod();
     }
 

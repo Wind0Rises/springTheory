@@ -15,7 +15,7 @@ import java.util.concurrent.TimeUnit;
 public class AopTest {
 
     public static void main(String[] args) throws Exception {
-        ApplicationContext context = new ClassPathXmlApplicationContext("classpath:spring-context.xml");
+        ApplicationContext context = new ClassPathXmlApplicationContext("classpath:spring-aop.xml");
         PointCut pointCut = (PointCut) context.getBean("pointCut");
         System.out.println(pointCut.getClass());
 

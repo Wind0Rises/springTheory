@@ -29,7 +29,10 @@
             <aop:pointcut id="customPointCut" expression="execution(* com.liu.study.spring.aop.PointCut.*(..))"/>
             <!-- 操作方式 -->
             <aop:before method="before" pointcut-ref="customPointCut" />
+            <aop:around method="around" pointcut-ref="customPointCut" />
             <aop:after method="after" pointcut-ref="customPointCut" />
+            <aop:after-returning method="afterReturn" pointcut-ref="customPointCut" />
+            <aop:after-throwing method="afterThrow" pointcut-ref="customPointCut" />
         </aop:aspect>
 
 

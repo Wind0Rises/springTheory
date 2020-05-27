@@ -40,6 +40,15 @@
         <url-pattern>/servlet/*</url-pattern>
     </servlet-mapping>
 
+    <servlet>
+        <servlet-name>requestDispatcher</servlet-name>
+        <servlet-class>com.liu.study.spring.mvc.servlet.RequestDispatcherServletTest</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>requestDispatcher</servlet-name>
+        <url-pattern>/dispatcher/*</url-pattern>
+    </servlet-mapping>
+
     <!--最后加载的 -->
     <servlet>
         <servlet-name>springMVC</servlet-name>

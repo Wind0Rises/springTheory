@@ -3,6 +3,7 @@ package com.liu.study.spring.mvc.controller;
 import com.liu.study.spring.mvc.controller.vo.SecondTestMethodVo;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -67,11 +68,55 @@ public class CustomController {
      *      例：application/json   ===>       MappingJackson2HttpMessageConverter     ===>    支持所有参数。
      *          text/plain         ===>       StringHttpMessageConverter              ===>    String
      */
-    @RequestMapping(value = "/second", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(value = "/second",  method = RequestMethod.POST,
+            consumes = MediaType.APPLICATION_JSON_UTF8_VALUE,
+            produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public String secondTestMethod(@RequestBody(required = false) SecondTestMethodVo receiveVo) {
         System.out.println(receiveVo.toString());
         return "{\"returnCode\":\"000000\"}";
+    }
+
+
+    private static final String DEFAULT_VIEW_INDEX = "/view/default.jsp";
+
+    /**
+     * 在使用默认的InternalResourceViewResolver是，加载的路劲为/webapp/view/default.jsp
+     * 注意"/"view/default.jsp第一个斜杠不能省，文件的后缀名也不能少。
+     *
+     * 如果配置了InternalResourceViewResolver，这个就可能把404了。
+     *
+     */
+    @RequestMapping(value = "/default", method = RequestMethod.GET)
+    public String thirdTestMethod(ModelMap modelMap) {
+        modelMap.addAttribute("username", "李四");
+        return DEFAULT_VIEW_INDEX;
+    }
+
+
+    private static final String VIEW_INDEX = "index";
+
+    /**
+     * 主要要在spring-mvc.xml中配置视解析器（InternalResourceViewResolver）。加载的地址
+     * 就是prefix + viewName + suffix。
+     * @param modelMap
+     * @return
+     */
+    @RequestMapping(value = "/index", method = RequestMethod.GET)
+    public String fourthlyTestMethod(ModelMap modelMap) {
+        modelMap.addAttribute("username", "张三");
+        return VIEW_INDEX;
+    }
+
+
+    private static final String VIEW_DISPATCHER = "requestDispatcher";
+
+    /**
+     * RequestDispatcher测试，页面与数据绑定。
+     */
+    @RequestMapping(value = "requestDispatcher")
+    public String fifthTestMethod() {
+        return VIEW_DISPATCHER;
     }
 
 }

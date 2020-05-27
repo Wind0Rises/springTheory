@@ -11,4 +11,19 @@
 
     <mvc:annotation-driven/>
 
+    <bean id="internalResourceViewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="prefix" value="/WEB-INF/view/"></property>
+        <property name="suffix" value=".jsp"></property>
+    </bean>
+
+
+    <mvc:interceptors>
+        <mvc:interceptor>
+            <mvc:mapping path="/**" />
+            <bean class="com.liu.study.spring.mvc.intercept.CustomHandlerIntercept" ></bean>
+        </mvc:interceptor>
+    </mvc:interceptors>
+
+
+    <bean name="/spring/controller" class="com.liu.study.spring.mvc.controller.ViewControllerController"/>
 </beans>

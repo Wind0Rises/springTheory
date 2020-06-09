@@ -5,11 +5,10 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.liu.study.spring</groupId>
-    <artifactId>002-web-study</artifactId>
+    <artifactId>a-study-spring-basis</artifactId>
     <version>1.0-SNAPSHOT</version>
-    <packaging>war</packaging>
 
-    <name>002-web-study Maven Webapp</name>
+    <name>a-study-spring-basis</name>
     <url>http://www.example.com</url>
 
     <properties>
@@ -28,6 +27,7 @@
             <scope>test</scope>
         </dependency>
 
+
         <!-- spring framework 主要模块 -->
         <dependency>
             <groupId>org.springframework</groupId>
@@ -44,51 +44,28 @@
             <artifactId>spring-beans</artifactId>
             <version>${version.spring.framework}</version>
         </dependency>
+
+        <!-- Spring Aop -->
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-aop</artifactId>
             <version>${version.spring.framework}</version>
         </dependency>
         <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-web</artifactId>
-            <version>${version.spring.framework}</version>
+            <groupId>org.aspectj</groupId>
+            <artifactId>aspectjweaver</artifactId>
+            <version>1.9.2</version>
         </dependency>
 
+        <!-- CGLIB 工具类 -->
         <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-webmvc</artifactId>
-            <version>${version.spring.framework}</version>
+            <groupId>cglib</groupId>
+            <artifactId>cglib</artifactId>
+            <version>3.2.10</version>
         </dependency>
-
-
-        <!-- MappingJackson2HttpMessageConverter。依赖的jar包，添加了这些jar，也会自动把
-             MappingJackson2HttpMessageConverter添加到RequestMappingHandlerAdapter的
-             HttpMessageConverter
-             对应的MappingJackson2HttpMessageConverter处理的Context-type是application/json
-         -->
-        <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-core</artifactId>
-            <version>2.10.0</version>
-        </dependency>
-        <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-databind</artifactId>
-            <version>2.10.0</version>
-        </dependency>
-
-        <dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>javax.servlet-api</artifactId>
-            <version>4.0.1</version>
-            <scope>provided</scope>
-        </dependency>
-
     </dependencies>
 
     <build>
-        <finalName>002-web-study</finalName>
         <pluginManagement>
             <plugins>
                 <plugin>
@@ -108,8 +85,8 @@
                     <version>2.22.1</version>
                 </plugin>
                 <plugin>
-                    <artifactId>maven-war-plugin</artifactId>
-                    <version>3.2.2</version>
+                    <artifactId>maven-jar-plugin</artifactId>
+                    <version>3.0.2</version>
                 </plugin>
                 <plugin>
                     <artifactId>maven-install-plugin</artifactId>
@@ -118,6 +95,15 @@
                 <plugin>
                     <artifactId>maven-deploy-plugin</artifactId>
                     <version>2.8.2</version>
+                </plugin>
+                <!-- site lifecycle, see https://maven.apache.org/ref/current/maven-core/lifecycles.html#site_Lifecycle -->
+                <plugin>
+                    <artifactId>maven-site-plugin</artifactId>
+                    <version>3.7.1</version>
+                </plugin>
+                <plugin>
+                    <artifactId>maven-project-info-reports-plugin</artifactId>
+                    <version>3.0.0</version>
                 </plugin>
             </plugins>
         </pluginManagement>

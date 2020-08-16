@@ -3,10 +3,12 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
+
+
     <groupId>com.liu.study.spring</groupId>
     <artifactId>study-spring-project</artifactId>
     <version>1.0-SNAPSHOT</version>
-    <packaging>war</packaging>
+    <packaging>pom</packaging>
 
     <name>study-spring-project</name>
     <url>http://www.example.com</url>
@@ -17,14 +19,15 @@
         <maven.compiler.target>1.8</maven.compiler.target>
         <version.spring.framework>4.3.12.RELEASE</version.spring.framework>
     </properties>
-	
+
 	<dependences>
-	
+
 	</dependences>
 
     <modules>
         <module>a-study-spring-basis</module>
         <module>b-study-spring-web</module>
+        <module>c-study-spring-data</module>
     </modules>
 
 	<build>
@@ -43,7 +46,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-resources-plugin</artifactId>
-                <version>3.8.0</version>
+                <version>3.1.0</version>
                 <configuration>
                     <encoding>UTF-8</encoding>
                 </configuration>

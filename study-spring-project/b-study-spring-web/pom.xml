@@ -1,8 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>com.liu.study.spring</groupId>
+        <artifactId>study-spring-project</artifactId>
+        <version>1.0-SNAPSHOT</version>
+        <relativePath>../pom.xml</relativePath>
+    </parent>
 
     <groupId>com.liu.study.spring</groupId>
     <artifactId>b-study-spring-web</artifactId>
@@ -28,27 +34,8 @@
             <scope>test</scope>
         </dependency>
 
-        <!-- spring framework 主要模块 -->
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-context</artifactId>
-            <version>${version.spring.framework}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-core</artifactId>
-            <version>${version.spring.framework}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-beans</artifactId>
-            <version>${version.spring.framework}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-aop</artifactId>
-            <version>${version.spring.framework}</version>
-        </dependency>
+
+        <!-- spring web相关的。 -->
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-web</artifactId>

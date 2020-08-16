@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.liu.study.spring.data.dao.UserMapper">
+
+	<select id="selectUserBySeq" parameterType="int" resultType="User" >
+		select * from shop_user where userSeq = #{userSeq, jdbcType=BIGINT}
+	</select>
+
+
+	<update id="updateUserBySeq" parameterType="com.liu.study.spring.data.model.User" >
+		update shop_user
+		<set>
+			<if test="username != null and username != '' ">
+				username = #{username, jdbcType=VARCHAR},
+			</if>
+			<if test="password != null and password != '' ">
+				`password` = #{password, jdbcType=VARCHAR},
+			</if>
+			<if test="sex != null and sex != '' ">
+				sex =  #{sex, jdbcType=VARCHAR},
+			</if>
+			<if test="createTime != null">
+				createTime = #{createTime, jdbcType=TIMESTAMP},
+			</if>
+			<if test="updateTime != null">
+				updateTime = #{updateTime, jdbcType=TIMESTAMP},
+			</if>
+			<if test="age != null">
+				age = #{age, jdbcType=INTEGER},
+			</if>
+			<if test="status != null and status != '' ">
+				status = #{status, jdbcType=TIME}
+			</if>
+		</set>
+		<where>
+			userSeq = #{userSeq, jdbcType=BIGINT}
+		</where>
+	</update>
+
+
+	<insert id="addUserInfo" parameterType="user" useGeneratedKeys="true" keyProperty="userSeq" keyColumn="userSeq" >
+		insert into shop_user(username, `password`, sex, createTime, updateTime, age, status)
+		values(
+			#{username, jdbcType=VARCHAR},
+			#{password, jdbcType=VARCHAR},
+			#{sex, jdbcType=VARCHAR},
+			#{createTime, jdbcType=TIMESTAMP},
+			#{updateTime, jdbcType=TIMESTAMP},
+			#{age, jdbcType=INTEGER},
+			#{status, jdbcType=VARCHAR}
+		)
+	</insert>
+
+</mapper>

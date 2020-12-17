@@ -40,6 +40,7 @@
         <module>c-study-spring-data</module>
         <module>d-study-spring-definition</module>
         <module>e-study-spring-expand</module>
+        <module>f-study-spring-xiaomage-first</module>
     </modules>
 
 	<build>

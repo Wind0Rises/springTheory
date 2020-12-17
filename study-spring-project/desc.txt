@@ -1,4 +1,30 @@
 
 
-Bean属性赋值（Populate）判断
+Bean属性赋值（Populate）【实例化前阶段】
     InstantiationAwareBeanPostProcessor
+
+
+实例化阶段：
+
+实例化后阶段
+
+赋值前阶段：
+
+
+
+
+
+Bean的销毁过程：
+    方法一：实现DestructionAwareBeanPostProcessor接口。
+    方法二：@PreDestroy注解。
+    方法三：自定义自定义方法，spring默认使用<bean>标签中有一个destroy-method属性。
+
+Bean被垃圾回收
+
+
+Spring配置元信息：
+    1、Bean的元信息      BeanDefinition.
+    2、Bean的属性 元信息 PropertyValues
+    3、容器配置元信息
+    4、Spring外部化配置元信息 -- PropertySource
+    5、Spring Profile元信息 -- @Profile

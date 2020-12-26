@@ -41,6 +41,7 @@
         <module>d-study-spring-definition</module>
         <module>e-study-spring-expand</module>
         <module>f-study-spring-xiaomage-first</module>
+        <module>g-study-spring-xiaomage-bean-definition</module>
     </modules>
 
 	<build>

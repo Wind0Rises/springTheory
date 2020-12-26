@@ -43,4 +43,21 @@
    * IoC元信息的读取和解析。
    * IoC容器的什么周期。
    * Spring事件发布。
-   * 国际化。            
+   * 国际化。    
+   
+   
+## 二、Bean Definition（Bean的元信息）
+### 2.1 BeanDefinition的元信息包好哪些信息。
+   * Class：Bean的全类名。
+   * Name：Bean的名称或者ID。
+   * Scope：作用域。 singleton、prototype    
+   * Constructor Argument：构造器参数，用于依赖注入的。
+   * Bean Properties：Bean的属性设置，用于依赖注入。
+   * Autowiring mode：Bean自动绑定（通过名称byName、byType）。
+   * Lazy Initialization Mode：Bean延迟初始化模式。
+   * Initialization Method：Bean初始化回调方法。
+   * Destruction Method：Bean销毁的回调方法。  
+   
+### 2.2 BeanDefinition构造方法
+   * 通过BeanDefinitionBuilder。
+   * 通过AbstractBeanDefinition以及派生类。

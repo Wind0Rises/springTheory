@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+                           http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
+
+    <bean id="static-method-crate-student" class="com.liu.study.spring.bean.definition.model.Student"
+           factory-method="createStudent" />
+
+    <!-- 通过工厂类的方式 -->
+    <bean id="defaultStudentFactory" class="com.liu.study.spring.bean.definition.factory.DefaultStudentFactory" />
+    <bean id="crate-student-by-factory" factory-bean="defaultStudentFactory" factory-method="crateStudent" />
+
+    <!-- factoryBean实例化 -->
+    <bean id="student-bean-by-factory-bean" class="com.liu.study.spring.bean.definition.factory.StudentFactoryBean" />
+</beans>

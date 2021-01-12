@@ -17,7 +17,7 @@
    
 ### 1.3 Bean的名称
 
-### 1.4 注册Spring Bean
+### 1.4 如何注册Spring Bean
 1. XML配置元信息
    * <bean name="....
 2. Java注解配置元信息   

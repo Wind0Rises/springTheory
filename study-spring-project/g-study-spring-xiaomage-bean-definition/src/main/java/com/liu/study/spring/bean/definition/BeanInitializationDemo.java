@@ -6,7 +6,8 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 import org.springframework.context.annotation.Bean;
 
 /**
- * 
+ * Bean初始化操作。
+ *
  * @author Liuweian
  * @createTime 2020/12/26 21:20
  * @version 1.0.0

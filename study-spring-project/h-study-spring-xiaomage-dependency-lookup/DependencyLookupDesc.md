@@ -14,3 +14,4 @@ ListableBeanFactory：一种是查询Bean的名称，一种是查询Bean实例�
 | messageSource | MessageSource 对象 | 国际化文案 |
 | lifecycleProcessor | LifecycleProcessor 对象 | Lifecycle Bean 处理器 |
 | applicationEventMulticaster | ApplicationEventMulticaster 对象| Spring事件广播 |
+

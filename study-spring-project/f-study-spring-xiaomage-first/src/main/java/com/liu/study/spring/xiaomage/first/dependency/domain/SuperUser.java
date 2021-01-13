@@ -2,6 +2,7 @@ package com.liu.study.spring.xiaomage.first.dependency.domain;
 
 import com.liu.study.spring.xiaomage.first.dependency.annotation.Super;
 import lombok.Data;
+import lombok.ToString;
 
 /**
  * 
@@ -11,6 +12,7 @@ import lombok.Data;
  */
 @Super
 @Data
+@ToString
 public class SuperUser extends User {
 
     private String address;

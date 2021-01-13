@@ -43,6 +43,7 @@
         <module>f-study-spring-xiaomage-first</module>
         <module>g-study-spring-xiaomage-bean-definition</module>
         <module>h-study-spring-xiaomage-dependency-lookup</module>
+        <module>i-study-spring-xiaomage-dependency-injection</module>
     </modules>
 
 	<build>

@@ -90,6 +90,7 @@ public class AnnotationApplicationContextTest {
     public static void importTest(AnnotationConfigApplicationContext applicationContext) {
         SpecialClassByImport bean = applicationContext.getBean(SpecialClassByImport.class);
         System.out.println(bean.getImport());
+        System.out.println(bean.getCouponCode());
     }
 
     /**

@@ -1,6 +1,5 @@
 package com.liu.study.spring.xiaomage.first.injection;
 
-import com.liu.study.spring.xiaomage.first.dependency.domain.User;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.ObjectFactory;
 import org.springframework.context.support.ClassPathXmlApplicationContext;

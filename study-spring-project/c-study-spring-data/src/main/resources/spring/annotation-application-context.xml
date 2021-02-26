@@ -43,5 +43,9 @@
      #                      注解事务管理                          #
      #############################################################
      -->
+    <!-- 配置事务管理器 DataSourceTransactionManager实现了PlatformTransactionManager-->
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
     <tx:annotation-driven />
 </beans>

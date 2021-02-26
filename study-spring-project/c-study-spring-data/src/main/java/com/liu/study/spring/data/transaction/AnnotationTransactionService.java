@@ -23,12 +23,13 @@ public class AnnotationTransactionService {
     private UserMapper userMapper;
 
     /**
+     * 如果能够插入成功，说明没有事务。
      *
      * @throws Exception
      */
     public void noTransactionUpdateUserInfo() throws Exception {
         User user = new User();
-        user.setUsername("annotationNoTransaction");
+        user.setUsername("annotation_no_transaction");
         user.setPassword("de");
         user.setAge(25);
         user.setSex("1");
@@ -38,17 +39,21 @@ public class AnnotationTransactionService {
 
         userMapper.addUserInfo(user);
 
-        if ("annotationNoTransaction".equals(user.getUsername())) {
-            System.out.println("###########################");
+        if ("annotation_no_transaction".equals(user.getUsername())) {
+            System.out.println("###########################   annotation_no_transaction  【抛异常了】   ###########################");
             throw new Exception();
         }
     }
 
+    /**
+     * 如果能够插入不成功，这事务生效
+     *
+     * @throws Exception
+     */
     @Transactional(value = "transactionManager", isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-    public void updateUserInfo() throws Exception {
-
+    public void hasTransactionAddUserInfo() throws Exception {
         User user = new User();
-        user.setUsername("annotationTransaction");
+        user.setUsername("annotation_has_transaction");
         user.setPassword("de");
         user.setAge(25);
         user.setSex("1");
@@ -57,9 +62,36 @@ public class AnnotationTransactionService {
         user.setCreateTime(new Date());
 
         userMapper.addUserInfo(user);
+        if ("annotation_has_transaction".equals(user.getUsername())) {
+            System.out.println("=====================    hasTransactionAddUserInfo  【抛异常了】   ###########################");
+            throw new Exception();
+        }
+    }
 
-        if ("annotationTransaction".equals(user.getUsername())) {
-            System.out.println("=====================");
+    /**
+     * 内部方法时，事务是【不会】生效的。
+     */
+    public void innerMethodInvokeTransaction() throws Exception {
+        innerMethod();
+    }
+
+    /**
+     * @Transaction 必须使用public修饰。
+     */
+    @Transactional(value = "transactionManager", isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+    public void innerMethod() throws Exception {
+        User user = new User();
+        user.setUsername("inner_method_invoke_transaction");
+        user.setPassword("de");
+        user.setAge(25);
+        user.setSex("1");
+        user.setStatus("1");
+        user.setUpdateTime(new Date());
+        user.setCreateTime(new Date());
+
+        userMapper.addUserInfo(user);
+        if ("inner_method_invoke_transaction".equals(user.getUsername())) {
+            System.out.println("=====================    hasTransactionAddUserInfo  【抛异常了】   ###########################");
             throw new Exception();
         }
     }

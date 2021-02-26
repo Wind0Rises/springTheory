@@ -26,7 +26,7 @@ public class StatementTransactionService {
      */
     public void noTransactionAddUserInfo() throws Exception {
         User user = new User();
-        user.setUsername("noTransaction");
+        user.setUsername("statement_no_transaction");
         user.setPassword("de");
         user.setAge(25);
         user.setSex("1");
@@ -36,7 +36,7 @@ public class StatementTransactionService {
 
 
         userMapper.addUserInfo(user);
-        if ("noTransaction".equals(user.getUsername())) {
+        if ("statement_no_transaction".equals(user.getUsername())) {
             System.out.println("###########################");
             throw new Exception();
         }
@@ -49,7 +49,7 @@ public class StatementTransactionService {
      */
     public void haveTransactionAddUserInfo() throws Exception  {
         User user = new User();
-        user.setUsername("liuweian");
+        user.setUsername("statement_has_transaction");
         user.setPassword("de");
         user.setAge(25);
         user.setSex("1");
@@ -58,27 +58,9 @@ public class StatementTransactionService {
         user.setCreateTime(new Date());
 
         userMapper.addUserInfo(user);
-        if ("liuweian".equals(user.getUsername())) {
+        if ("statement_has_transaction".equals(user.getUsername())) {
             System.out.println("=====================");
             throw new Exception();
         }
     }
-
-
-    public void updateUserInfoTest() {
-        User user = new User();
-        user.setUsername("ww");
-        user.setPassword("de");
-        user.setAge(25);
-        user.setSex("1");
-        user.setStatus("1");
-        user.setUpdateTime(new Date());
-        user.setCreateTime(new Date());
-        user.setUserSeq(16);
-
-        userMapper.updateUserBySeq(user);
-
-        System.out.println(" #############   update  end  ########## ");
-    }
-
 }

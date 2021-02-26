@@ -23,4 +23,9 @@ public class StudentFactoryBean implements FactoryBean {
     public Class<?> getObjectType() {
         return Student.class;
     }
+
+    @Override
+    public boolean isSingleton() {
+        return false;
+    }
 }

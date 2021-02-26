@@ -19,8 +19,12 @@ public class StatementTransactionService {
     @Autowired
     private UserMapper userMapper;
 
-    public void noTrancationUpdateUserInfo() throws Exception {
-
+    /**
+     * 看该条数据有没有存入数据库，如果保存到数据库，就是没有事务。
+     *
+     * @throws Exception
+     */
+    public void noTransactionAddUserInfo() throws Exception {
         User user = new User();
         user.setUsername("noTransaction");
         user.setPassword("de");
@@ -30,17 +34,20 @@ public class StatementTransactionService {
         user.setUpdateTime(new Date());
         user.setCreateTime(new Date());
 
-        userMapper.addUserInfo(user);
 
+        userMapper.addUserInfo(user);
         if ("noTransaction".equals(user.getUsername())) {
             System.out.println("###########################");
             throw new Exception();
         }
-
     }
 
-    public void updateUserInfo() throws Exception  {
 
+    /**
+     * 看该条数据有没有存入数据库，如果【没有】保存到数据库，就是没有事务。
+     * @throws Exception
+     */
+    public void haveTransactionAddUserInfo() throws Exception  {
         User user = new User();
         user.setUsername("liuweian");
         user.setPassword("de");
@@ -51,7 +58,6 @@ public class StatementTransactionService {
         user.setCreateTime(new Date());
 
         userMapper.addUserInfo(user);
-
         if ("liuweian".equals(user.getUsername())) {
             System.out.println("=====================");
             throw new Exception();
@@ -60,7 +66,6 @@ public class StatementTransactionService {
 
 
     public void updateUserInfoTest() {
-
         User user = new User();
         user.setUsername("ww");
         user.setPassword("de");
@@ -74,7 +79,6 @@ public class StatementTransactionService {
         userMapper.updateUserBySeq(user);
 
         System.out.println(" #############   update  end  ########## ");
-
     }
 
 }

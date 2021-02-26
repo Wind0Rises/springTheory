@@ -22,8 +22,11 @@ public class AnnotationTransactionService {
     @Autowired
     private UserMapper userMapper;
 
+    /**
+     *
+     * @throws Exception
+     */
     public void noTransactionUpdateUserInfo() throws Exception {
-
         User user = new User();
         user.setUsername("annotationNoTransaction");
         user.setPassword("de");
@@ -39,7 +42,6 @@ public class AnnotationTransactionService {
             System.out.println("###########################");
             throw new Exception();
         }
-
     }
 
     @Transactional(value = "transactionManager", isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)

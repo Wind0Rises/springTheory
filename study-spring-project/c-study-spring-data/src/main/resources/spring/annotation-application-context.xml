@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.3.xsd
+     		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd
+     		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd
+		    http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd">
+
+
+    <context:annotation-config />
+
+    <context:component-scan base-package="com.liu.study.spring" />
+
+    <!-- 配置数据源 -->
+    <bean id="dataSource" class="org.apache.commons.dbcp2.BasicDataSource">
+        <property name="driverClassName" value="com.mysql.jdbc.Driver" />
+        <property name="url" value="jdbc:mysql://47.98.130.59:3306/spring_test" />
+        <property name="username" value="root" />
+        <property name="password" value="123456" />
+    </bean>
+
+    <!-- 获得sqlSessionFactory -->
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <!-- 映射数据源 -->
+        <property name="dataSource" ref="dataSource" />
+        <property name="mapperLocations" value="mapper/*Mapper.xml"/>
+        <property name="typeAliasesPackage" value="com.liu.study.spring.data.model" />
+    </bean>
+
+
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <!-- mapper接口扫描的包，即将此包下所有符合的mapper接口加载到SpringIOC容器管理 -->
+        <property name="basePackage" value="com.liu.study.spring.data.dao"></property>
+        <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"></property>
+    </bean>
+
+
+    <!--
+     #############################################################
+     #                      注解事务管理                          #
+     #############################################################
+     -->
+    <tx:annotation-driven />
+</beans>

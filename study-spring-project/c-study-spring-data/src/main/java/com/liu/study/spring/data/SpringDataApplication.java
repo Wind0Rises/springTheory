@@ -2,8 +2,6 @@ package com.liu.study.spring.data;
 
 import com.liu.study.spring.data.model.User;
 import com.liu.study.spring.data.service.IDataUserService;
-import com.liu.study.spring.data.transaction.AnnotationTransactionService;
-import com.liu.study.spring.data.transaction.StatementTransactionService;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import java.util.Date;
@@ -23,35 +21,24 @@ public class SpringDataApplication {
         // firstMainTest();
         // updateUserTest();
         // addUserTest();
-
-        /**
-         * 声明式事务测试。
-         * 声明式事务，需要在xml中配置对应的Advice和pointCut。
-         */
-        // statementTransactionTest();
-
-        /**
-         * 注解事务测试
-         * 注解事务，需要在xml中开启<tx:annotation-driven />
-         */
-        //annotationTransactionTest();
-
-
-        /**
-         * 事务测试。
-         */
-        transactionTest();
     }
 
+    /**
+     * 接入Data第一个测试。
+     */
     public static void firstMainTest() {
-        ClassPathXmlApplicationContext applicationContext = new ClassPathXmlApplicationContext("classpath:spring/application-context.xml");
+        ClassPathXmlApplicationContext applicationContext = new ClassPathXmlApplicationContext("classpath:spring/statement-application-context.xml");
         IDataUserService userService = applicationContext.getBean(IDataUserService.class);
         User user = userService.queryUserInfo(1);
         System.out.println("获取的用户信息为：" + user.toString());
     }
 
+
+    /**
+     * update操作测试
+     */
     public static void updateUserTest() {
-        ClassPathXmlApplicationContext applicationContext = new ClassPathXmlApplicationContext("classpath:spring/application-context.xml");
+        ClassPathXmlApplicationContext applicationContext = new ClassPathXmlApplicationContext("classpath:spring/statement-application-context.xml");
         IDataUserService userService = applicationContext.getBean(IDataUserService.class);
         User user = userService.queryUserInfo(2);
         user.setUsername("阿的说法");
@@ -59,8 +46,11 @@ public class SpringDataApplication {
         System.out.println("#####################   更新成功  ###########################");
     }
 
+    /**
+     * add操作测试。
+     */
     public static void addUserTest() {
-        ClassPathXmlApplicationContext applicationContext = new ClassPathXmlApplicationContext("classpath:spring/application-context.xml");
+        ClassPathXmlApplicationContext applicationContext = new ClassPathXmlApplicationContext("classpath:spring/statement-application-context.xml");
         IDataUserService userService = applicationContext.getBean(IDataUserService.class);
         User user = new User();
         user.setUsername("liuse");
@@ -74,48 +64,6 @@ public class SpringDataApplication {
         System.out.println("#####################   新增成功 " + primaryKey + " ###########################");
     }
 
-    public static void statementTransactionTest() {
-        ClassPathXmlApplicationContext applicationContext = new ClassPathXmlApplicationContext("classpath:spring/application-context.xml");
-        StatementTransactionService statementTransactionService = applicationContext.getBean(StatementTransactionService.class);
-        try {
-            statementTransactionService.noTrancationUpdateUserInfo();
-        } catch (Exception e) {
-            System.out.println("  No Transaction Exception");
-        }
 
 
-        try {
-            statementTransactionService.updateUserInfo();
-        } catch (Exception e) {
-            System.out.println("  Transaction Exception");
-        }
-
-    }
-
-
-    public static void annotationTransactionTest() {
-        ClassPathXmlApplicationContext applicationContext = new ClassPathXmlApplicationContext("classpath:spring/application-context.xml");
-        AnnotationTransactionService annotationTransactionService = applicationContext.getBean(AnnotationTransactionService.class);
-        try {
-            annotationTransactionService.noTransactionUpdateUserInfo();
-        } catch (Exception e) {
-            System.out.println("  No Transaction Exception");
-        }
-
-
-        try {
-            annotationTransactionService.updateUserInfo();
-        } catch (Exception e) {
-            System.out.println("  Transaction Exception");
-        }
-    }
-
-
-    public static void transactionTest() {
-
-        ClassPathXmlApplicationContext applicationContext = new ClassPathXmlApplicationContext("classpath:spring/application-context.xml");
-        StatementTransactionService statementTransactionService = applicationContext.getBean(StatementTransactionService.class);
-
-        statementTransactionService.updateUserInfoTest();
-    }
 }

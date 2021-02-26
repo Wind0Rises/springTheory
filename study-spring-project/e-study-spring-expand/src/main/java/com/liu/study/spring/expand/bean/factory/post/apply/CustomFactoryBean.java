@@ -18,7 +18,7 @@ public class CustomFactoryBean implements FactoryBean {
     }
 
     @Override
-    public Object getObject() throws Exception {
+    public Object getObject() {
         Class[] clazzes = new Class[]{this.clazz};
         Object proxy = Proxy.newProxyInstance(this.getClass().getClassLoader(), clazzes, new CustomMapperInvocationHandler());
         return proxy;

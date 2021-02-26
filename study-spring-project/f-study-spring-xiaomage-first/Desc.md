@@ -16,7 +16,7 @@
     3、外部化属性配置：基于Java注解。  
     
 ## 1.5 BeanFactory和ApplicationContext谁才是Spring IoC容器。
-    1、BeanFactory接口提供了高级的配置的机制，能够管理这些<note>对象</note>。
+    1、BeanFactory提供了最简单的容器功能，进行管理Bean实例。
     2、ApplicationContext是BeanFactory的子接口：
         1. 简化了和Spring Aop的整合。
         2. 消息和资源的处理。

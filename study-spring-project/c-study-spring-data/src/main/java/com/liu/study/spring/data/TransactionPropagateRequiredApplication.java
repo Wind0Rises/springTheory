@@ -38,7 +38,7 @@ public class TransactionPropagateRequiredApplication {
          *
          * <note>方法B没有事务，是使用方法A的事务。</note>
          */
-        // propagateLevelIsRequiredTestFirst();
+        propagateLevelIsRequiredTestFirst();
 
         /**
          * 方式二：A有事务，B有事务
@@ -53,7 +53,7 @@ public class TransactionPropagateRequiredApplication {
         /**
          *
          */
-        propagateLevelIsRequiredTestThree();
+        // propagateLevelIsRequiredTestThree();
     }
 
     /**

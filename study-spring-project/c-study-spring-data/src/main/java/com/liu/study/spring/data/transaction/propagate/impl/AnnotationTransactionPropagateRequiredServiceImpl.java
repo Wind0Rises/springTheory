@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.support.TransactionSynchronizationManager;
 
 import javax.annotation.PostConstruct;
 import java.util.Date;
@@ -62,7 +63,7 @@ public class AnnotationTransactionPropagateRequiredServiceImpl implements IAnnot
             rollbackFor = Exception.class)
     public void firstWayIsAHaveTransaction() throws Exception {
         User user = new User();
-        user.setUsername("方式一：A有事务");
+        user.setUsername("way_1: A have transaction");
         user.setPassword("-----");
         user.setAge(25);
         user.setSex("1");
@@ -79,8 +80,9 @@ public class AnnotationTransactionPropagateRequiredServiceImpl implements IAnnot
 
     @Override
     public void firstWayIsBNoHaveTransaction() throws Exception {
+        System.out.println("当前实际存在的事务：" + TransactionSynchronizationManager.isActualTransactionActive());
         User user = new User();
-        user.setUsername("方式一：B没有事务");
+        user.setUsername("way_1: B no have transaction");
         user.setPassword("-----");
         user.setAge(25);
         user.setSex("1");
@@ -88,7 +90,7 @@ public class AnnotationTransactionPropagateRequiredServiceImpl implements IAnnot
         user.setUpdateTime(new Date());
         user.setCreateTime(new Date());
         userMapper.addUserInfo(user);
-        if ("方式一：B没有事务".equals(user.getUsername())) {
+        if ("way_1: B no have transaction".equals(user.getUsername())) {
             throw new Exception("###########################   FirstWayIsBNoHaveTransaction  方式一：B没有事务，【抛出异常】   ###############");
         }
     }
@@ -114,7 +116,7 @@ public class AnnotationTransactionPropagateRequiredServiceImpl implements IAnnot
         requiredService.secondWayIsBNoHaveTransaction();
 
         User user = new User();
-        user.setUsername("方式二：A有事务");
+        user.setUsername("way_2: A have transaction");
         user.setPassword("-----");
         user.setAge(25);
         user.setSex("1");
@@ -122,7 +124,7 @@ public class AnnotationTransactionPropagateRequiredServiceImpl implements IAnnot
         user.setUpdateTime(new Date());
         user.setCreateTime(new Date());
         userMapper.addUserInfo(user);
-        if ("方式二：A有事务".equals(user.getUsername())) {
+        if ("way_2: A have transaction".equals(user.getUsername())) {
             throw new Exception("###########################   secondWayIsBNoHaveTransaction  方式一：B没有事务，【抛出异常】   ###############");
         }
     }
@@ -134,7 +136,7 @@ public class AnnotationTransactionPropagateRequiredServiceImpl implements IAnnot
             rollbackFor = Exception.class)
     public void secondWayIsBNoHaveTransaction() throws Exception {
         User user = new User();
-        user.setUsername("方式二：B有事务");
+        user.setUsername("way_2: B have transaction");
         user.setPassword("-----");
         user.setAge(25);
         user.setSex("1");
@@ -162,7 +164,7 @@ public class AnnotationTransactionPropagateRequiredServiceImpl implements IAnnot
         requiredService.threeWayIsBNoHaveTransaction();
 
         User user = new User();
-        user.setUsername("方式三：A没有事务");
+        user.setUsername("way_3: A no have transaction");
         user.setPassword("-----");
         user.setAge(25);
         user.setSex("1");
@@ -170,7 +172,7 @@ public class AnnotationTransactionPropagateRequiredServiceImpl implements IAnnot
         user.setUpdateTime(new Date());
         user.setCreateTime(new Date());
         userMapper.addUserInfo(user);
-        if ("方式三：A没有事务".equals(user.getUsername())) {
+        if ("way_3: A no have transaction务".equals(user.getUsername())) {
             throw new Exception("###########################   threeWayIsBNoHaveTransaction  方式三：B没有事务，【抛出异常】   ###############");
         }
     }
@@ -182,7 +184,7 @@ public class AnnotationTransactionPropagateRequiredServiceImpl implements IAnnot
             rollbackFor = Exception.class)
     public void threeWayIsBNoHaveTransaction() throws Exception {
         User user = new User();
-        user.setUsername("方式三：B有事务");
+        user.setUsername("way_3: B have transaction");
         user.setPassword("-----");
         user.setAge(25);
         user.setSex("1");

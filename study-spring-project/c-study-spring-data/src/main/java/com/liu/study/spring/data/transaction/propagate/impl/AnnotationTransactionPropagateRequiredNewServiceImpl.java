@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.support.TransactionSynchronizationManager;
 
 import java.util.Date;
 
@@ -74,12 +75,17 @@ public class AnnotationTransactionPropagateRequiredNewServiceImpl implements IAn
 
         /**
          * B
+         *
+         * firstWayIsBNoHaveTransaction()方法是以事务执行还是非事务执行？？？
+         * 是使用firstWayIsAHaveTransaction方法的事务？？
          */
         requiredNewService.firstWayIsBNoHaveTransaction();
     }
 
     @Override
     public void firstWayIsBNoHaveTransaction() throws Exception {
+        System.out.println("当前是否存在事务：" + TransactionSynchronizationManager.isActualTransactionActive() + "事务名称：" +
+                TransactionSynchronizationManager.getCurrentTransactionName());
         User user = new User();
         user.setUsername("way_1: B no have transaction");
         user.setPassword("-----");
@@ -120,6 +126,7 @@ public class AnnotationTransactionPropagateRequiredNewServiceImpl implements IAn
         user.setStatus("1");
         user.setUpdateTime(new Date());
         user.setCreateTime(new Date());
+        System.out.println("A的事务：" + TransactionSynchronizationManager.getCurrentTransactionName());
         userMapper.addUserInfo(user);
         if ("way_2: A have transaction".equals(user.getUsername())) {
             throw new Exception("###########################   secondWayIsBNoHaveTransaction  方式一：B没有事务，【抛出异常】   ###############");
@@ -140,6 +147,7 @@ public class AnnotationTransactionPropagateRequiredNewServiceImpl implements IAn
         user.setStatus("1");
         user.setUpdateTime(new Date());
         user.setCreateTime(new Date());
+        System.out.println("B的事务：" + TransactionSynchronizationManager.getCurrentTransactionName());
         userMapper.addUserInfo(user);
     }
 
@@ -166,6 +174,7 @@ public class AnnotationTransactionPropagateRequiredNewServiceImpl implements IAn
         user.setUpdateTime(new Date());
         user.setCreateTime(new Date());
         userMapper.addUserInfo(user);
+        System.out.println("A 存在事务：" + TransactionSynchronizationManager.isActualTransactionActive());
         if ("way_3: A no have transaction".equals(user.getUsername())) {
             throw new Exception("###########################   threeWayIsBNoHaveTransaction  方式三：B没有事务，【抛出异常】   ###############");
         }
@@ -185,6 +194,8 @@ public class AnnotationTransactionPropagateRequiredNewServiceImpl implements IAn
         user.setStatus("1");
         user.setUpdateTime(new Date());
         user.setCreateTime(new Date());
+        System.out.println("B 存在事务：" + TransactionSynchronizationManager.isActualTransactionActive() + "事务名称：" +
+                TransactionSynchronizationManager.getCurrentTransactionName());
         userMapper.addUserInfo(user);
     }
 

@@ -74,7 +74,11 @@ public class AnnotationTransactionPropagateMandatoryServiceImpl implements IAnno
 
         /**
          * B
-         * TODO：当firstWayIsAHaveTransaction有事务的时候，mandatoryService.firstWayIsBNoHaveTransaction()是否存在事务。
+         *
+         * 当firstWayIsAHaveTransaction有事务的时候，mandatoryService.firstWayIsBNoHaveTransaction()是否存在事务？？？
+         * 是存在事务的。
+         * TODO：验证、
+         *
          */
         mandatoryService.firstWayIsBNoHaveTransaction();
     }

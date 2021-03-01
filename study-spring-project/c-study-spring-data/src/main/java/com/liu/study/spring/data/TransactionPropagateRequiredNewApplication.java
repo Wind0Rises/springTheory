@@ -15,9 +15,9 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 public class TransactionPropagateRequiredNewApplication {
 
     /**
-     * 如果当前有事务，则支持当前事务，
-     * 如果当前没有事务，直接报错
-     * <note>不会创建新的事务</note>
+     * 创建一个新的事务并挂起当前事务
+     * 如果当前存在事务，则挂起事务，创建新的事务，
+     * 如果当前没有事务，支持当前事务。
      */
     public static void main(String[] args) throws Exception {
         /**
@@ -43,7 +43,10 @@ public class TransactionPropagateRequiredNewApplication {
         ClassPathXmlApplicationContext applicationContext = new ClassPathXmlApplicationContext("classpath:spring/annotation-application-context.xml");
         IAnnotationTransactionPropagateRequiredNewService annotationTransactionPropagateService = applicationContext.getBean(IAnnotationTransactionPropagateRequiredNewService.class);
 
-        // 02、以无事务执行
+        /**
+         * 都不会插入成功；
+         * firstWayIsAHaveTransaction、firstWayIsBNoHaveTransaction使用的是同一个事务。
+         */
         annotationTransactionPropagateService.firstWayIsAHaveTransaction();
     }
 
@@ -54,14 +57,9 @@ public class TransactionPropagateRequiredNewApplication {
         ClassPathXmlApplicationContext applicationContext = new ClassPathXmlApplicationContext("classpath:spring/annotation-application-context.xml");
         IAnnotationTransactionPropagateRequiredNewService annotationTransactionPropagateService = applicationContext.getBean(IAnnotationTransactionPropagateRequiredNewService.class);
 
-        // 01、有事务执行。不会插入数据。
-        // A方法会创建一个事务，B方法也会自己创建一个事务。A不会使用openTransaction()的事务，B不会使用A的事务。
-        // A抛出异常，事务回滚；B正常执行，B执行完成以后会提交事务，B方法的数据会插入数据库。
-        // annotationTransactionPropagateService.openTransaction(2);
-
-        // 02、以无事务开始执行；
-        // A方法会创建一个事务，B方法也会自己创建一个事务。
-        // A抛出异常，事务回滚；B正常执行，B执行完成以后会提交事务，B方法的数据会插入数据库。
+        /**
+         * way_2: B have transaction将插入成功，使用的是自己的事务。
+         */
         annotationTransactionPropagateService.secondWayIsAHaveTransaction();
     }
 

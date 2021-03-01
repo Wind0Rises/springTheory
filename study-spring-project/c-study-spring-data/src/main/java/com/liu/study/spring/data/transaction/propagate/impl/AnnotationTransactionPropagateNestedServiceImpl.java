@@ -2,12 +2,13 @@ package com.liu.study.spring.data.transaction.propagate.impl;
 
 import com.liu.study.spring.data.dao.UserMapper;
 import com.liu.study.spring.data.model.User;
-import com.liu.study.spring.data.transaction.propagate.IAnnotationTransactionPropagateSupportNoService;
+import com.liu.study.spring.data.transaction.propagate.IAnnotationTransactionPropagateNestedService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.support.TransactionSynchronizationManager;
 
 import java.util.Date;
 
@@ -18,58 +19,34 @@ import java.util.Date;
  * @createTime 2020/6/9 18:20
  */
 @Service
-public class AnnotationTransactionPropagateSupportNoServiceImpl implements IAnnotationTransactionPropagateSupportNoService {
+public class AnnotationTransactionPropagateNestedServiceImpl implements IAnnotationTransactionPropagateNestedService {
 
     @Autowired
     private UserMapper userMapper;
 
     @Autowired
-    private IAnnotationTransactionPropagateSupportNoService supportNoService;
+    private IAnnotationTransactionPropagateNestedService nestedService;
 
     /**
      * 传播：肯定有多个方法的调用。
-     *
-     * 方法A；方法B
-     *
-     * 方式一：A有事务，B没有事务
-     * 方式二：A有事务，B有事务
-     * 方式三：A没有事务，B没有事务
-     * 方式四：A没有事务，B有事务
-     */
 
 
     // #################################     方式一：A有事务，B没有事务   #####################################################
-
-    @Override
-    @Transactional(value = "transactionManager",
-            isolation = Isolation.READ_COMMITTED,
-            propagation = Propagation.REQUIRED,
-            rollbackFor = Exception.class)
-    public void openTransaction(int method) throws Exception {
-        if (1 == method) {
-            supportNoService.firstWayIsAHaveTransaction();
-        } else if (2 == method) {
-            supportNoService.secondWayIsAHaveTransaction();
-        }
-    }
 
     /**
      *          A                 ->            B
      * FirstWayIsAHaveTransaction -> FirstWayIsANoHaveTransaction
      *
-     * FirstWayIsANoHaveTransaction()方法抛出异常，判断FirstWayIsAHaveTransaction()是否回滚。
-     *
-     * way_1：A have transaction：插入失败，支持当前事务。
-     * way_1：B no have transaction：插入失败，支持当前事务。
-     *
      */
     @Override
     @Transactional(value = "transactionManager",
             isolation = Isolation.READ_COMMITTED,
-            propagation = Propagation.SUPPORTS,
+            propagation = Propagation.REQUIRED,
             rollbackFor = Exception.class)
     public void firstWayIsAHaveTransaction() throws Exception {
         User user = new User();
+        System.out.println("A 存在事务？" + TransactionSynchronizationManager.isActualTransactionActive() + "事务名称：" +
+                TransactionSynchronizationManager.getCurrentTransactionName());
         user.setUsername("way_1: A have transaction");
         user.setPassword("-----");
         user.setAge(25);
@@ -82,7 +59,7 @@ public class AnnotationTransactionPropagateSupportNoServiceImpl implements IAnno
         /**
          * B
          */
-        supportNoService.firstWayIsBNoHaveTransaction();
+        nestedService.firstWayIsBNoHaveTransaction();
     }
 
     @Override
@@ -96,6 +73,8 @@ public class AnnotationTransactionPropagateSupportNoServiceImpl implements IAnno
         user.setUpdateTime(new Date());
         user.setCreateTime(new Date());
         userMapper.addUserInfo(user);
+        System.out.println("B 存在事务？" + TransactionSynchronizationManager.isActualTransactionActive() + "事务名称：" +
+                TransactionSynchronizationManager.getCurrentTransactionName());
         if ("way_1: B no have transaction".equals(user.getUsername())) {
             throw new Exception("###########################   FirstWayIsBNoHaveTransaction  方式一：B没有事务，【抛出异常】   ###############");
         }
@@ -111,14 +90,9 @@ public class AnnotationTransactionPropagateSupportNoServiceImpl implements IAnno
     @Override
     @Transactional(value = "transactionManager",
             isolation = Isolation.READ_COMMITTED,
-            propagation = Propagation.SUPPORTS,
+            propagation = Propagation.REQUIRED,
             rollbackFor = Exception.class)
     public void secondWayIsAHaveTransaction() throws Exception {
-        /**
-         * B
-         */
-        supportNoService.secondWayIsBNoHaveTransaction();
-
         User user = new User();
         user.setUsername("way_2: A have transaction");
         user.setPassword("-----");
@@ -127,18 +101,21 @@ public class AnnotationTransactionPropagateSupportNoServiceImpl implements IAnno
         user.setStatus("1");
         user.setUpdateTime(new Date());
         user.setCreateTime(new Date());
+        System.out.println("A 存在事务？" + TransactionSynchronizationManager.isActualTransactionActive() + "事务名称：" +
+                TransactionSynchronizationManager.getCurrentTransactionName());
         userMapper.addUserInfo(user);
-        if ("way_2: A have transaction".equals(user.getUsername())) {
-            throw new Exception("###########################   secondWayIsBNoHaveTransaction  方式一：B没有事务，【抛出异常】   ###############");
-        }
+
+        /**
+         * B
+         */
+        nestedService.secondWayIsBHaveTransaction();
     }
 
-    @Override
     @Transactional(value = "transactionManager",
             isolation = Isolation.READ_COMMITTED,
-            propagation = Propagation.SUPPORTS,
+            propagation = Propagation.NESTED,
             rollbackFor = Exception.class)
-    public void secondWayIsBNoHaveTransaction() throws Exception {
+    public void secondWayIsBHaveTransaction() throws Exception {
         User user = new User();
         user.setUsername("way_2: B have transaction");
         user.setPassword("-----");
@@ -147,7 +124,12 @@ public class AnnotationTransactionPropagateSupportNoServiceImpl implements IAnno
         user.setStatus("1");
         user.setUpdateTime(new Date());
         user.setCreateTime(new Date());
+        System.out.println("B 存在事务？" + TransactionSynchronizationManager.isActualTransactionActive() + "事务名称：" +
+                TransactionSynchronizationManager.getCurrentTransactionName());
         userMapper.addUserInfo(user);
+        if ("way_2: B have transaction".equals(user.getUsername())) {
+            throw new Exception("###########################   secondWayIsBNoHaveTransaction  方式一：B有事务，【抛出异常】   ###############");
+        }
     }
 
 
@@ -155,9 +137,7 @@ public class AnnotationTransactionPropagateSupportNoServiceImpl implements IAnno
     // #################################     方式三：A没有事务，B没有事务   #####################################################
 
     /**
-     * threeWayIsAHaveTransaction()：能插入成功，因为threeWayIsAHaveTransaction()没有事务
-     * threeWayIsBNoHaveTransaction()：能插入成功，因为threeWayIsBNoHaveTransaction()有事务，但是threeWayIsBNoHaveTransaction（）
-     * 没有抛出，方法执行结束，事务提交。
+     *
      *
      */
     @Override
@@ -165,7 +145,7 @@ public class AnnotationTransactionPropagateSupportNoServiceImpl implements IAnno
         /**
          * B
          */
-        supportNoService.threeWayIsBNoHaveTransaction();
+        nestedService.threeWayIsBNoHaveTransaction();
 
         User user = new User();
         user.setUsername("way_3: A no have transaction");
@@ -176,6 +156,7 @@ public class AnnotationTransactionPropagateSupportNoServiceImpl implements IAnno
         user.setUpdateTime(new Date());
         user.setCreateTime(new Date());
         userMapper.addUserInfo(user);
+        System.out.println("A 存在事务？" + TransactionSynchronizationManager.isActualTransactionActive());
         if ("way_3: A no have transaction".equals(user.getUsername())) {
             throw new Exception("###########################   threeWayIsBNoHaveTransaction  方式三：B没有事务，【抛出异常】   ###############");
         }
@@ -184,7 +165,7 @@ public class AnnotationTransactionPropagateSupportNoServiceImpl implements IAnno
     @Override
     @Transactional(value = "transactionManager",
             isolation = Isolation.READ_COMMITTED,
-            propagation = Propagation.SUPPORTS,
+            propagation = Propagation.NESTED,
             rollbackFor = Exception.class)
     public void threeWayIsBNoHaveTransaction() throws Exception {
         User user = new User();
@@ -195,6 +176,7 @@ public class AnnotationTransactionPropagateSupportNoServiceImpl implements IAnno
         user.setStatus("1");
         user.setUpdateTime(new Date());
         user.setCreateTime(new Date());
+        System.out.println("B 存在事务？" + TransactionSynchronizationManager.isActualTransactionActive());
         userMapper.addUserInfo(user);
     }
 

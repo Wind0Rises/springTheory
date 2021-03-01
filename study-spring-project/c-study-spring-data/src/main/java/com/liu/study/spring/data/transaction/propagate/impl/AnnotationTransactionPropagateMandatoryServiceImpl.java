@@ -2,7 +2,7 @@ package com.liu.study.spring.data.transaction.propagate.impl;
 
 import com.liu.study.spring.data.dao.UserMapper;
 import com.liu.study.spring.data.model.User;
-import com.liu.study.spring.data.transaction.propagate.IAnnotationTransactionPropagateSupportService;
+import com.liu.study.spring.data.transaction.propagate.IAnnotationTransactionPropagateMandatoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
@@ -18,13 +18,13 @@ import java.util.Date;
  * @createTime 2020/6/9 18:20
  */
 @Service
-public class AnnotationTransactionPropagateSupportServiceImpl implements IAnnotationTransactionPropagateSupportService {
+public class AnnotationTransactionPropagateMandatoryServiceImpl implements IAnnotationTransactionPropagateMandatoryService {
 
     @Autowired
     private UserMapper userMapper;
 
     @Autowired
-    private IAnnotationTransactionPropagateSupportService supportService;
+    private IAnnotationTransactionPropagateMandatoryService mandatoryService;
 
     /**
      * 传播：肯定有多个方法的调用。
@@ -47,26 +47,19 @@ public class AnnotationTransactionPropagateSupportServiceImpl implements IAnnota
             rollbackFor = Exception.class)
     public void openTransaction(int method) throws Exception {
         if (1 == method) {
-            supportService.firstWayIsAHaveTransaction();
+            mandatoryService.firstWayIsAHaveTransaction();
         } else if (2 == method) {
-            supportService.secondWayIsAHaveTransaction();
+            mandatoryService.secondWayIsAHaveTransaction();
         }
     }
 
     /**
-     *          A                 ->            B
-     * FirstWayIsAHaveTransaction -> FirstWayIsANoHaveTransaction
-     *
-     * FirstWayIsANoHaveTransaction()方法抛出异常，判断FirstWayIsAHaveTransaction()是否回滚。
-     *
-     * way_1：A have transaction：插入失败，支持当前事务。
-     * way_1：B no have transaction：插入失败，支持当前事务。
-     *
+     *  依赖调用方，是否存在事务。
      */
     @Override
     @Transactional(value = "transactionManager",
             isolation = Isolation.READ_COMMITTED,
-            propagation = Propagation.SUPPORTS,
+            propagation = Propagation.MANDATORY,
             rollbackFor = Exception.class)
     public void firstWayIsAHaveTransaction() throws Exception {
         User user = new User();
@@ -81,8 +74,9 @@ public class AnnotationTransactionPropagateSupportServiceImpl implements IAnnota
 
         /**
          * B
+         * TODO：当firstWayIsAHaveTransaction有事务的时候，mandatoryService.firstWayIsBNoHaveTransaction()是否存在事务。
          */
-        supportService.firstWayIsBNoHaveTransaction();
+        mandatoryService.firstWayIsBNoHaveTransaction();
     }
 
     @Override
@@ -111,13 +105,13 @@ public class AnnotationTransactionPropagateSupportServiceImpl implements IAnnota
     @Override
     @Transactional(value = "transactionManager",
             isolation = Isolation.READ_COMMITTED,
-            propagation = Propagation.SUPPORTS,
+            propagation = Propagation.MANDATORY,
             rollbackFor = Exception.class)
     public void secondWayIsAHaveTransaction() throws Exception {
         /**
          * B
          */
-        supportService.secondWayIsBNoHaveTransaction();
+        mandatoryService.secondWayIsBNoHaveTransaction();
 
         User user = new User();
         user.setUsername("way_2: A have transaction");
@@ -136,7 +130,7 @@ public class AnnotationTransactionPropagateSupportServiceImpl implements IAnnota
     @Override
     @Transactional(value = "transactionManager",
             isolation = Isolation.READ_COMMITTED,
-            propagation = Propagation.SUPPORTS,
+            propagation = Propagation.MANDATORY,
             rollbackFor = Exception.class)
     public void secondWayIsBNoHaveTransaction() throws Exception {
         User user = new User();
@@ -165,7 +159,7 @@ public class AnnotationTransactionPropagateSupportServiceImpl implements IAnnota
         /**
          * B
          */
-        supportService.threeWayIsBNoHaveTransaction();
+        mandatoryService.threeWayIsBNoHaveTransaction();
 
         User user = new User();
         user.setUsername("way_3: A no have transaction");

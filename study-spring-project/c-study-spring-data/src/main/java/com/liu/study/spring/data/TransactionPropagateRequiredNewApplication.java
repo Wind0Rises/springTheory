@@ -1,7 +1,7 @@
 package com.liu.study.spring.data;
 
-import com.liu.study.spring.data.transaction.propagate.IAnnotationTransactionPropagateRequiredService;
-import com.liu.study.spring.data.transaction.propagate.IAnnotationTransactionPropagateSupportService;
+import com.liu.study.spring.data.transaction.propagate.IAnnotationTransactionPropagateMandatoryService;
+import com.liu.study.spring.data.transaction.propagate.IAnnotationTransactionPropagateRequiredNewService;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 /**
@@ -12,11 +12,11 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
  * @version 1.0.0
  * @createTime 2021/2/26 13:01
  */
-public class TransactionPropagateSupportApplication {
+public class TransactionPropagateRequiredNewApplication {
 
     /**
      * 如果当前有事务，则支持当前事务，
-     * 如果当前没有事务，则以无事务执行。
+     * 如果当前没有事务，直接报错
      * <note>不会创建新的事务</note>
      */
     public static void main(String[] args) throws Exception {
@@ -33,7 +33,7 @@ public class TransactionPropagateSupportApplication {
         /**
          *
          */
-        propagateLevelIsRequiredTestThree();
+         propagateLevelIsRequiredTestThree();
     }
 
     /**
@@ -41,10 +41,10 @@ public class TransactionPropagateSupportApplication {
      */
     public static void propagateLevelIsRequiredTestFirst() throws Exception {
         ClassPathXmlApplicationContext applicationContext = new ClassPathXmlApplicationContext("classpath:spring/annotation-application-context.xml");
-        IAnnotationTransactionPropagateSupportService annotationTransactionPropagateService = applicationContext.getBean(IAnnotationTransactionPropagateSupportService.class);
+        IAnnotationTransactionPropagateRequiredNewService annotationTransactionPropagateService = applicationContext.getBean(IAnnotationTransactionPropagateRequiredNewService.class);
 
-
-        annotationTransactionPropagateService.openTransaction(1);
+        // 02、以无事务执行
+        annotationTransactionPropagateService.firstWayIsAHaveTransaction();
     }
 
     /**
@@ -52,27 +52,26 @@ public class TransactionPropagateSupportApplication {
      */
     public static void propagateLevelIsRequiredTestSecond() throws Exception {
         ClassPathXmlApplicationContext applicationContext = new ClassPathXmlApplicationContext("classpath:spring/annotation-application-context.xml");
-        IAnnotationTransactionPropagateSupportService annotationTransactionPropagateService = applicationContext.getBean(IAnnotationTransactionPropagateSupportService.class);
-
-        /**
-         * 都会支持当前事务。如果调用secondWayIsAHaveTransaction()方法的方法存在事务，则支持这个事务
-         * 如果没有事务，则以无事务执行。
-         */
+        IAnnotationTransactionPropagateRequiredNewService annotationTransactionPropagateService = applicationContext.getBean(IAnnotationTransactionPropagateRequiredNewService.class);
 
         // 01、有事务执行。不会插入数据。
+        // A方法会创建一个事务，B方法也会自己创建一个事务。A不会使用openTransaction()的事务，B不会使用A的事务。
+        // A抛出异常，事务回滚；B正常执行，B执行完成以后会提交事务，B方法的数据会插入数据库。
         // annotationTransactionPropagateService.openTransaction(2);
 
-        // 02、无事务执行。会插入数据，并且都插入。
+        // 02、以无事务开始执行；
+        // A方法会创建一个事务，B方法也会自己创建一个事务。
+        // A抛出异常，事务回滚；B正常执行，B执行完成以后会提交事务，B方法的数据会插入数据库。
         annotationTransactionPropagateService.secondWayIsAHaveTransaction();
     }
 
     /**
-     * Support不会创建事务，所有，所以只要调用这个方没有事务，所有方法都不会有事务。
-     * 所以都会插入进去。
+     * A没有事务，会插入数据库；
+     * B有事务，但是没有异常，会插入数据库。
      */
     public static void propagateLevelIsRequiredTestThree() throws Exception {
         ClassPathXmlApplicationContext applicationContext = new ClassPathXmlApplicationContext("classpath:spring/annotation-application-context.xml");
-        IAnnotationTransactionPropagateSupportService annotationTransactionPropagateService = applicationContext.getBean(IAnnotationTransactionPropagateSupportService.class);
+        IAnnotationTransactionPropagateRequiredNewService annotationTransactionPropagateService = applicationContext.getBean(IAnnotationTransactionPropagateRequiredNewService.class);
         annotationTransactionPropagateService.threeWayIsAHaveTransaction();
     }
 

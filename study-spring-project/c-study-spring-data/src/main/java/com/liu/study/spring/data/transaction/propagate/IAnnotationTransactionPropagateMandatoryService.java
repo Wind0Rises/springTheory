@@ -5,7 +5,7 @@ package com.liu.study.spring.data.transaction.propagate;
  * @version 1.0.0
  * @createTime 2021/2/26 16:58
  */
-public interface IAnnotationTransactionPropagateSupportService {
+public interface IAnnotationTransactionPropagateMandatoryService {
 
     void openTransaction(int method) throws Exception;
 

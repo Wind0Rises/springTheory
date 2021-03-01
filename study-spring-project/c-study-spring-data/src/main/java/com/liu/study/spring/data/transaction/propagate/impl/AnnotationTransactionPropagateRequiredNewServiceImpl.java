@@ -2,7 +2,7 @@ package com.liu.study.spring.data.transaction.propagate.impl;
 
 import com.liu.study.spring.data.dao.UserMapper;
 import com.liu.study.spring.data.model.User;
-import com.liu.study.spring.data.transaction.propagate.IAnnotationTransactionPropagateSupportService;
+import com.liu.study.spring.data.transaction.propagate.IAnnotationTransactionPropagateRequiredNewService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
@@ -18,13 +18,13 @@ import java.util.Date;
  * @createTime 2020/6/9 18:20
  */
 @Service
-public class AnnotationTransactionPropagateSupportServiceImpl implements IAnnotationTransactionPropagateSupportService {
+public class AnnotationTransactionPropagateRequiredNewServiceImpl implements IAnnotationTransactionPropagateRequiredNewService {
 
     @Autowired
     private UserMapper userMapper;
 
     @Autowired
-    private IAnnotationTransactionPropagateSupportService supportService;
+    private IAnnotationTransactionPropagateRequiredNewService requiredNewService;
 
     /**
      * 传播：肯定有多个方法的调用。
@@ -47,26 +47,19 @@ public class AnnotationTransactionPropagateSupportServiceImpl implements IAnnota
             rollbackFor = Exception.class)
     public void openTransaction(int method) throws Exception {
         if (1 == method) {
-            supportService.firstWayIsAHaveTransaction();
+            requiredNewService.firstWayIsAHaveTransaction();
         } else if (2 == method) {
-            supportService.secondWayIsAHaveTransaction();
+            requiredNewService.secondWayIsAHaveTransaction();
         }
     }
 
     /**
-     *          A                 ->            B
-     * FirstWayIsAHaveTransaction -> FirstWayIsANoHaveTransaction
-     *
-     * FirstWayIsANoHaveTransaction()方法抛出异常，判断FirstWayIsAHaveTransaction()是否回滚。
-     *
-     * way_1：A have transaction：插入失败，支持当前事务。
-     * way_1：B no have transaction：插入失败，支持当前事务。
-     *
+     *  依赖调用方，是否存在事务。
      */
     @Override
     @Transactional(value = "transactionManager",
             isolation = Isolation.READ_COMMITTED,
-            propagation = Propagation.SUPPORTS,
+            propagation = Propagation.REQUIRES_NEW,
             rollbackFor = Exception.class)
     public void firstWayIsAHaveTransaction() throws Exception {
         User user = new User();
@@ -82,7 +75,7 @@ public class AnnotationTransactionPropagateSupportServiceImpl implements IAnnota
         /**
          * B
          */
-        supportService.firstWayIsBNoHaveTransaction();
+        requiredNewService.firstWayIsBNoHaveTransaction();
     }
 
     @Override
@@ -111,13 +104,13 @@ public class AnnotationTransactionPropagateSupportServiceImpl implements IAnnota
     @Override
     @Transactional(value = "transactionManager",
             isolation = Isolation.READ_COMMITTED,
-            propagation = Propagation.SUPPORTS,
+            propagation = Propagation.REQUIRES_NEW,
             rollbackFor = Exception.class)
     public void secondWayIsAHaveTransaction() throws Exception {
         /**
          * B
          */
-        supportService.secondWayIsBNoHaveTransaction();
+        requiredNewService.secondWayIsBNoHaveTransaction();
 
         User user = new User();
         user.setUsername("way_2: A have transaction");
@@ -136,7 +129,7 @@ public class AnnotationTransactionPropagateSupportServiceImpl implements IAnnota
     @Override
     @Transactional(value = "transactionManager",
             isolation = Isolation.READ_COMMITTED,
-            propagation = Propagation.SUPPORTS,
+            propagation = Propagation.REQUIRES_NEW,
             rollbackFor = Exception.class)
     public void secondWayIsBNoHaveTransaction() throws Exception {
         User user = new User();
@@ -155,9 +148,6 @@ public class AnnotationTransactionPropagateSupportServiceImpl implements IAnnota
     // #################################     方式三：A没有事务，B没有事务   #####################################################
 
     /**
-     * threeWayIsAHaveTransaction()：能插入成功，因为threeWayIsAHaveTransaction()没有事务
-     * threeWayIsBNoHaveTransaction()：能插入成功，因为threeWayIsBNoHaveTransaction()有事务，但是threeWayIsBNoHaveTransaction（）
-     * 没有抛出，方法执行结束，事务提交。
      *
      */
     @Override
@@ -165,7 +155,7 @@ public class AnnotationTransactionPropagateSupportServiceImpl implements IAnnota
         /**
          * B
          */
-        supportService.threeWayIsBNoHaveTransaction();
+        requiredNewService.threeWayIsBNoHaveTransaction();
 
         User user = new User();
         user.setUsername("way_3: A no have transaction");
@@ -184,7 +174,7 @@ public class AnnotationTransactionPropagateSupportServiceImpl implements IAnnota
     @Override
     @Transactional(value = "transactionManager",
             isolation = Isolation.READ_COMMITTED,
-            propagation = Propagation.SUPPORTS,
+            propagation = Propagation.REQUIRES_NEW,
             rollbackFor = Exception.class)
     public void threeWayIsBNoHaveTransaction() throws Exception {
         User user = new User();

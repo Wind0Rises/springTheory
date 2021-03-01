@@ -55,6 +55,7 @@ public class AnnotationTransactionPropagateRequiredServiceImpl implements IAnnot
      * FirstWayIsANoHaveTransaction()方法抛出异常，判断FirstWayIsAHaveTransaction()是否回滚。
      * 如果【方式一：A有事务】插入成功，说明事务没有生效，如果插入成功，说明事务生效了。
      */
+    @Override
     @Transactional(value = "transactionManager",
             isolation = Isolation.READ_COMMITTED,
             propagation = Propagation.REQUIRED,
@@ -76,6 +77,7 @@ public class AnnotationTransactionPropagateRequiredServiceImpl implements IAnnot
         requiredService.firstWayIsBNoHaveTransaction();
     }
 
+    @Override
     public void firstWayIsBNoHaveTransaction() throws Exception {
         User user = new User();
         user.setUsername("方式一：B没有事务");
@@ -100,6 +102,7 @@ public class AnnotationTransactionPropagateRequiredServiceImpl implements IAnnot
      *
      * @throws Exception
      */
+    @Override
     @Transactional(value = "transactionManager",
             isolation = Isolation.READ_COMMITTED,
             propagation = Propagation.REQUIRED,
@@ -124,6 +127,7 @@ public class AnnotationTransactionPropagateRequiredServiceImpl implements IAnnot
         }
     }
 
+    @Override
     @Transactional(value = "transactionManager",
             isolation = Isolation.READ_COMMITTED,
             propagation = Propagation.REQUIRED,
@@ -150,6 +154,7 @@ public class AnnotationTransactionPropagateRequiredServiceImpl implements IAnnot
      * 没有抛出，方法执行结束，事务提交。
      *
      */
+    @Override
     public void threeWayIsAHaveTransaction() throws Exception {
         /**
          * B
@@ -170,6 +175,7 @@ public class AnnotationTransactionPropagateRequiredServiceImpl implements IAnnot
         }
     }
 
+    @Override
     @Transactional(value = "transactionManager",
             isolation = Isolation.READ_COMMITTED,
             propagation = Propagation.REQUIRED,

@@ -18,7 +18,7 @@ public class SpringDataApplication {
         /**
          * spring-mybatis 操作数据库测试。
          */
-        // firstMainTest();
+        firstMainTest();
         // updateUserTest();
         // addUserTest();
     }
